@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://todomvc.com/examples/vanilla-es6/node_modules/todomvc-common/base.css">
+    <link rel="stylesheet" href="http://todomvc.com/examples/vanilla-es6/node_modules/todomvc-app-css/index.css">
+    <title>Lecture 01</title>
+    <style type="text/css"></style>
+</head>
+<body>
+<section class="todoapp">
+    <header class="header">
+        <h1>todos</h1>
+        <input class="new-todo" placeholder="What needs to be done?" autofocus="">
+    </header>
+    <section class="main">
+        <input class="toggle-all" type="checkbox">
+        <label for="toggle-all">Mark all as complete</label>
+        <ul class="todo-list"></ul>
+        <footer class="footer">
+            <span class="todo-count"></span>
+            <div class="filters">
+                <a href="#/" class="selected">All</a>
+                <a href="#/active">Active</a>
+                <a href="#/completed">Completed</a>
+            </div>
+            <button class="clear-completed">Clear completed</button>
+        </footer>
+    </section>
+</section>
+
+<footer class="info">
+    <p>Double-click to edit a todo</p>
+    <p>Created by <a href="http://twitter.com/oscargodson">Oscar Godson</a></p>
+    <p>Refactored by <a href="https://github.com/cburgmer">Christoph Burgmer</a></p>
+    <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+</footer>
+
+<script>
+    var state = {
+        todos: [
+            {text: 'Hi', completed: true},
+            {text: 'Hello', completed: false},
+            {text: 'Hi there!', completed: true},
+        ],
+        filter: 'all'
+    };
+
+    function createWithCreateElements(todos, targetElm) {
+
+        // konstrukce, ktera vrati stringovou reprezentaci node
+        // POZOR - da se tim HTML destruovat
+        targetElm.innerHTML = "";
+
+        for (var i = 0; i < todos.length; i++) {
+            // debugger;
+            var todo = todos[i];
+
+            var todoEl = document.createElement("li");
+            var todoInput = document.createElement("input");
+
+            // prirazeni atribut
+            todoInput.type = "checkbox";
+            todoInput.classList.add("toggle");
+            todoInput.checked = todo.completed;
+
+            // vnitrni label node
+            var todoLbl = document.createElement("label");
+            todoLbl.innerText = todo.text;
+
+            // tvorba tlacitka
+            var todoBtn = document.createElement("button");
+            todoBtn.classList.add("destroy");
+
+            // vytvorit template html
+            todoEl.appendChild(todoInput);
+            todoEl.appendChild(todoLbl);
+            todoEl.appendChild(todoBtn);
+
+            targetElm.appendChild(todoEl);
+        }
+    }
+
+    function createWithHTMLString(todos, targetElm) {
+        for (var i = 0; i < todos.length; i++) {
+            var template = "<li>\n"
+                +"<input class=\"toggle\" type=\"checkbox\""
+                + (todos[i].completed ? "checked" : "")
+                + ">"
+                + "<label>" + todos[i].text + "</label>"
+                + "<button class=\"destroy\"></button>"
+                + "</li>";
+
+            targetElm.insertAdjacentHTML("beforeend", template);
+        }
+    }
+
+    var targetElement = document.querySelector("ul.todo-list");
+    // createWithCreateElements(state.todos, targetElement);
+    createWithHTMLString(state.todos, targetElement);
+
+
+    /*
+    Template:
+
+    <li>
+        <div class="view">
+            <input class="toggle" type="checkbox">
+            <label>aaa</label>
+            <button class="destroy"></button>
+        </div>
+    </li>
+    */
+</script>
+
+
+</body>
+</html>
