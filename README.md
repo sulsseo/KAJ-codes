@@ -1,2 +1,1 @@
-init
-
+Zdrojové kódy k předmětu **B0B39KAJ**
