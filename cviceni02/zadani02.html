@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://todomvc.com/examples/vanilla-es6/node_modules/todomvc-common/base.css">
+    <link rel="stylesheet" href="http://todomvc.com/examples/vanilla-es6/node_modules/todomvc-app-css/index.css">
+    <title>Lecture 01</title>
+    <style type="text/css"></style>
+</head>
+<body>
+<section class="todoapp">
+    <header class="header">
+        <h1>todos</h1>
+        <input class="new-todo" placeholder="What needs to be done?" autofocus="">
+    </header>
+    <section class="main">
+        <input class="toggle-all" type="checkbox">
+        <label for="toggle-all">Mark all as complete</label>
+        <ul class="todo-list"></ul>
+        <footer class="footer">
+            <span class="todo-count"></span>
+            <div class="filters">
+                <a href="#/" class="selected">All</a>
+                <a href="#/active">Active</a>
+                <a href="#/completed">Completed</a>
+            </div>
+            <button class="clear-completed">Clear completed</button>
+        </footer>
+    </section>
+</section>
+
+<footer class="info">
+    <p>Double-click to edit a todo</p>
+    <p>Created by <a href="http://twitter.com/oscargodson">Oscar Godson</a></p>
+    <p>Refactored by <a href="https://github.com/cburgmer">Christoph Burgmer</a></p>
+    <p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+</footer>
+
+<script>
+
+    function buildCode(todo) {
+        return "<li>\n"
+            + "<input class=\"toggle\" type=\"checkbox\""
+            + (todo.completed ? "checked" : "")
+            + ">"
+            + "<label>" + todo.text + "</label>"
+            + "<button class=\"destroy\"></button>"
+            + "</li>";
+    }
+
+    function State(initialTodos, initialFilter) {
+        this._todos = initialTodos;
+        this._filter = initialFilter;
+    }
+
+    State.prototype.getTodos = function () {
+        // return this._todos;
+        var filter = function (todo) {
+            if (this._filter === "all") return true;
+            if (this._filter === "completed") return todo.completed;
+            if (this._filter === "active") return !todo.completed;
+        };
+        return this._todos.filter(filter, this);
+    };
+
+    State.prototype.addTodo = function (text) {
+        this._todos.push(text);
+    };
+
+    State.prototype.setFilter = function(filter) {
+        this._filter = filter;
+        this._todos.forEach(function (todo) {
+            var node = buildCode(todo);
+            targetElement.insertAdjacentHTML("beforeend", node);
+        });
+    };
+
+    var state2 = new State([
+        {text: 'Hi', completed: true},
+        {text: 'Hello', completed: false},
+        {text: 'Hi there!', completed: true}
+    ], "all");
+
+    var filters = {
+        all: document.querySelector("#filter-all"),
+        active: document.querySelector("#filter-active"),
+        complete: document.querySelector("#filter-complete")
+    };
+
+    /* START not work just copy of some magic */
+    for (var filter in filters) {
+        var node = filters[filter];
+        var onClick = function(filter, e) {
+            state.setFilter(filter);
+        }
+        var onClick2 = onClick.bind(this, filter);
+        node.addEventListener("click", onClick2);
+    }
+    /* END not work */
+
+
+    // var state = {
+    //     todos: [
+    //         {text: 'Hi', completed: true},
+    //         {text: 'Hello', completed: false},
+    //         {text: 'Hi there!', completed: true}
+    //     ],
+    //     filter: 'all'
+    // };
+
+    var targetElement = document.querySelector("ul.todo-list");
+
+    // other way to render html for each task
+    state2._todos.forEach(function (todo) {
+        var node = buildCode(todo);
+        targetElement.insertAdjacentHTML("beforeend", node);
+    });
+
+
+    // key listener to add new task after fill new-task field
+    var input = document.querySelector(".new-todo");
+
+    input.addEventListener("keydown", function (e) {
+        if (e.keyCode === 13) {
+
+            // get text from input
+            var text = e.target.value.trim();
+
+            // clear input after add task
+            if (text.length) {
+                e.target.value = "";
+            }
+
+            // create task in data
+            var todo = {text: text, completed: false};
+            // state.todos.push(todo);
+            state2.addTodo(todo);
+
+            // build html and render
+            var node = buildCode(todo);
+            targetElement.insertAdjacentHTML("afterbegin", node);
+        }
+
+    });
+
+    // solution: http://seznam.github.io/CVUT/KAJ/cviceni/02/reseni.html
+
+    /*
+    Template:
+
+    <li>
+        <div class="view">
+            <input class="toggle" type="checkbox">
+            <label>aaa</label>
+            <button class="destroy"></button>
+        </div>
+    </li>
+    */
+</script>
+
+
+</body>
+</html>
