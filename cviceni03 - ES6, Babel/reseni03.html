@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<!-- saved from url=(0055)http://seznam.github.io/CVUT/KAJ/cviceni/03/zadani.html -->
+<html>
+<head>
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="http://todomvc.com/examples/vanilla-es6/node_modules/todomvc-common/base.css">
+    <link rel="stylesheet" href="http://todomvc.com/examples/vanilla-es6/node_modules/todomvc-app-css/index.css">
+    <title>Lecture 03</title>
+</head>
+<body>
+<section class="todoapp">
+    <header class="header">
+        <h1>todos</h1>
+        <input class="new-todo" placeholder="What needs to be done?" autofocus="">
+    </header>
+    <section class="main">
+        <input class="toggle-all" type="checkbox">
+        <label for="toggle-all">Mark all as complete</label>
+        <ul class="todo-list">
+            <li><input class="toggle" type="checkbox" checked=""> <label>Hi</label>
+                <button class="destroy"></button>
+            </li>
+            <li><input class="toggle" type="checkbox"> <label>Hello</label>
+                <button class="destroy"></button>
+            </li>
+            <li><input class="toggle" type="checkbox" checked=""> <label>Hi there!</label>
+                <button class="destroy"></button>
+            </li>
+        </ul>
+        <footer class="footer">
+            <span class="todo-count"></span>
+            <div class="filters">
+                <a id="filter-all" href="http://seznam.github.io/CVUT/KAJ/cviceni/03/zadani.html#/"
+                   class="selected">All</a>
+                <a id="filter-active" href="http://seznam.github.io/CVUT/KAJ/cviceni/03/zadani.html#/active">Active</a>
+                <a id="filter-completed" href="http://seznam.github.io/CVUT/KAJ/cviceni/03/zadani.html#/completed">Completed</a>
+            </div>
+            <button class="clear-completed">Clear completed</button>
+        </footer>
+    </section>
+</section>
+
+<footer class="info">
+    <p>Double-click to edit a todo</p>
+    <p>Created by <a href="http://twitter.com/oscargodson">Oscar Godson</a></p>
+    <p>Refactored by <a href="https://github.com/cburgmer">Christoph Burgmer</a></p>
+    <p>Part of <a href="http://todomvc.com/">TodoMVC</a></p>
+</footer>
+
+<script>
+    //
+    // Predefined state
+    //
+
+    const initialState = {
+        todos: [
+            {text: 'Hi', completed: true},
+            {text: 'Hello', completed: false},
+            {text: 'Hi there!', completed: true}
+        ],
+        filter: 'all'
+    };
+
+    //
+    // Class containing state
+    //
+
+    class State {
+        constructor(initialTodos, initialFilter) {
+            this._todos = initialTodos;
+            this._filter = initialFilter;
+        }
+
+        addTodo(todo) {
+            this._todos.push(todo);
+        }
+
+        setFilter(filter) {
+            this._filter = filter
+        }
+
+        getTodos = function () {
+            return this._todos.filter(todo => {
+                if (this._filter === 'all') {
+                    return true;
+                } else if (this._filter === 'completed') {
+                    return todo.completed === true;
+                } else if (this._filter === 'active') {
+                    return todo.completed === false;
+                }
+            })
+        }
+    }
+
+    const state = new State(initialState.todos, initialState.filter);
+
+    //
+    // Prepare todos html
+    //
+
+    /*
+        Template example:
+        <li>
+            <input class="toggle" type="checkbox" checked>
+            <label>aaa</label>
+            <button class="destroy"></button>
+        </li>
+    */
+
+    function
+
+    createHtmlWithCreateElement(todos, targetEl) {
+        targetEl.innerHTML = '';
+
+        for (let todo of todos) {
+
+            // Prepare elements
+            const inputEl = document.createElement('input');
+            inputEl.classList.add('toggle');
+            inputEl.type = 'checkbox';
+            inputEl.checked = todo.completed;
+
+            const labelEl = document.createElement('label');
+            labelEl.innerHTML = todo.text;
+
+            const buttonEl = document.createElement('button');
+            buttonEl.classList.add('destroy');
+
+            // Append these elements to the todo wrapper element
+            const todoEl = document.createElement('li');
+            todoEl.appendChild(inputEl);
+            todoEl.appendChild(labelEl);
+            todoEl.appendChild(buttonEl);
+
+            // Append todo to the page
+            targetEl.appendChild(todoEl);
+        }
+    }
+
+    function
+
+    createHtmlWithStrings(todos, targetEl) {
+        targetEl.innerHTML = '';
+
+        // TODO rewrite with template literal
+        const todosHtmlArray = todos.map(function (todo) {
+            return `
+                    <li>
+                        <input class="toggle" type="checkbox" ${(todo.completed ? 'checked' : '')}>
+                        <label>${todo.text}</label>
+                        <button class="destroy"></buttoncl>
+                    </li>
+                    `;
+        });
+        // EXERCISE: try to use reduce instead of map
+
+        targetEl.innerHTML = todosHtmlArray.join('');
+        // EXERCISE: try to use insertAdjacentHTML instead of innerHTML, what is the difference between these two
+    }
+
+    //
+    // Append todos html into the page
+    //
+
+    const todoListEl = document.querySelector('.todo-list');
+
+    // createHtmlWithCreateElement(state.getTodos(), todoListEl);
+    createHtmlWithStrings(state.getTodos(), todoListEl);
+
+    //
+    // Handle main input
+    //
+
+    const inputEl = document.querySelector('.new-todo');
+    inputEl.addEventListener('keyup', function (event) {
+            // EXCERCISE: inspect the event object in dev console
+
+            const KEY_ENTER = 13;
+            if (event.keyCode !== KEY_ENTER) {
+                return;
+            }
+
+            // Update app state
+            const todo = {
+                text: inputEl.value,
+                completed: false
+            };
+
+            state.addTodo(todo);
+
+            // Update html
+            inputEl.value = '';
+            createHtmlWithStrings(state.getTodos(), todoListEl);
+        }
+    );
+
+    //
+    // Prototype expansion
+    //
+
+    // Add method on Object prototype. This method will modify the object
+    // and add current timestamp to it. All created objects inherit from
+    // Object prototype and will have this method.
+    Object.prototype.addTimestamp = function () {
+        this.timestamp = Date.now();
+    };
+    // You should generally avoid modifying prototypes of basic JavaScript
+    // objects, see: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/forEach
+    // But it can be sometimes useful, for example, if we want to polyfill
+    // some language feature to older browsers.
+
+    //
+    // Handle filters
+    //
+
+    const filters = {
+        all: document.querySelector('#filter-all'),
+        active: document.querySelector('#filter-active'),
+        completed: document.querySelector('#filter-completed')
+    };
+
+    for (const filterName in filters) {
+        // Without hasOwnProperty check, we would also be iterating over addTimestamp method
+        if (filters.hasOwnProperty(filterName)) {
+            const filterEl = filters[filterName];
+
+            // This is IIFE (immediately-invoked function expression).
+            // We need to capture the filterName value. Otherwise, we would
+            // be referencing (after some time when the user clicks and the
+            // listener function is called) to the last value of this iteration,
+            // not the value of current iteration - which is what we want.
+            filterEl.addEventListener('click', function () {
+                    filtersClick(capturedFilterName);
+                }
+            )
+            ;
+        }
+    }
+
+    function filtersClick(newFilterType) {
+        // Another approach to rendering the view, manually update html
+        // nodes that need to be updated instead of rerendering the whole
+        // part of the UI, as we did in createHtmlWithStrings or in
+        // createHtmlWithCreateElement functions.
+
+        // Remove 'selected' class on all filter buttons
+        for (const key in filters) {
+            if (filters.hasOwnProperty(key)) {
+                const filter = filters[key];
+                filter.classList.remove('selected');
+            }
+        }
+
+        // Add 'selected' class to clicked filter button
+        filters[newFilterType].classList.add('selected');
+
+        // Update state
+        state.setFilter(newFilterType);
+
+        // Render todos view
+        createHtmlWithCreateElement(state.getTodos(), todoListEl);
+    }
+
+</script>
+
+
+</body>
+</html>
