@@ -6,7 +6,7 @@
 </head>
 
 <style>
-    .ring {
+    div {
         background: red;
         border-radius: 100px;
         height: 100px;
@@ -23,17 +23,47 @@
 <div class="ring" id="ring"></div>
 
 <script>
-    const Move = function () {
-        document.body.addEventListener("keydown", this._keyDown.bind(this));
+    var Move = function (top, left) {
+        // document.body.addEventListener("keydown", this._keyDown.bind(this));
+        document.body.addEventListener("keydown", this);
+        document.body.addEventListener("mousemove", this);
 
-        this.elm = document.getElementById(".ring");
+        this.elm = document.querySelector("div");
+        this.elm.style.top = top + "px";
+        this.elm.style.left = left + "px";
 
         this._step = 5;
     };
 
     Move.prototype._keyDown = function (e) {
+        switch (e.code) {
+            case "ArrowUp": this._move("top", -this._step); break;
+            case "ArrowDown": this._move("top", this._step); break;
+            case "ArrowLeft": this._move("left", -this._step); break;
+            case "ArrowRight": this._move("left", this._step); break;
 
-    }
+        }
+    };
+
+    Move.prototype._move = function (direction, move) {
+
+        // set properties top and left
+        this.elm.style[direction] = (parseInt(this.elm.style[direction]) + move) + "px";
+    };
+
+    Move.prototype._logPos = function (e) {
+        console.log("x: " + e.clientX + "y: " + e.clientY);
+    };
+
+    Move.prototype.handleEvent = function (e) {
+        if (e.type === "keydown") {
+            this._keyDown(e);
+        } else if (e.type === "mousemove") {
+            this._logPos(e);
+        }
+    };
+
+    var m = new Move(50, 50);
 </script>
 </body>
 </html>
