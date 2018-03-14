@@ -29,7 +29,7 @@
 <div class="ring" id="ring"><a href="https://www.google.com">Google</a></div>
 
 <script>
-    var Move = function (top, left) {
+    let Move = function (top, left) {
         // document.body.addEventListener("keydown", this._keyDown.bind(this));
         document.body.addEventListener("keydown", this);
         document.body.addEventListener("mousemove", this);
@@ -48,7 +48,6 @@
             case "ArrowDown": this._move("top", this._step); break;
             case "ArrowLeft": this._move("left", -this._step); break;
             case "ArrowRight": this._move("left", this._step); break;
-
         }
     };
 
@@ -80,7 +79,27 @@
         }
     };
 
-    var m = new Move(50, 50);
+    let m = new Move(50, 50);
+
+    // promise
+    // after 3 seconds is resolve
+    let p1 = new Promise((resolve, reject) => {
+        setTimeout(() => {
+            resolve("success")
+        }, 3000)
+    });
+    p1.then(message => {console.log(message)}, error => {console.log(error)});
+
+    // async function returning promise
+    let dwn = async function() {
+        let d = await fetch(document.location.href);
+        let t = await d.text();
+
+        return t;
+    };
+
+    dwn().then(text => {console.log(text)});
+
 </script>
 </body>
 </html>
