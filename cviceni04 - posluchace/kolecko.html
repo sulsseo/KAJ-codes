@@ -6,7 +6,7 @@
 </head>
 
 <style>
-    div {
+    .ring {
         background: red;
         border-radius: 100px;
         height: 100px;
@@ -14,19 +14,26 @@
         position: absolute;
         top: 50px;
         left: 50px;
+        text-align: center;
+        padding-top: 40px;
         box-sizing: border-box;
+    }
+    div a {
+        color: white;
+        text-decoration: none;
     }
 </style>
 
 <body>
 
-<div class="ring" id="ring"></div>
+<div class="ring" id="ring"><a href="https://www.google.com">Google</a></div>
 
 <script>
     var Move = function (top, left) {
         // document.body.addEventListener("keydown", this._keyDown.bind(this));
         document.body.addEventListener("keydown", this);
         document.body.addEventListener("mousemove", this);
+        document.body.addEventListener("click", this);
 
         this.elm = document.querySelector("div");
         this.elm.style.top = top + "px";
@@ -55,11 +62,21 @@
         console.log("x: " + e.clientX + "y: " + e.clientY);
     };
 
+    Move.prototype._showConfirm = function (e) {
+        // remove previous event
+
+        if (!confirm("opravdu chcete utect na" + e.target.href + " ?")) {
+            e.preventDefault();
+        }
+    };
+
     Move.prototype.handleEvent = function (e) {
         if (e.type === "keydown") {
             this._keyDown(e);
         } else if (e.type === "mousemove") {
             this._logPos(e);
+        } else if (e.type === "click" && e.target.nodeName.toLowerCase() === "a") {
+            this._showConfirm(e);
         }
     };
 
