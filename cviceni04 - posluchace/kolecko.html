@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kolecko</title>
+</head>
+
+<style>
+    .ring {
+        background: red;
+        border-radius: 100px;
+        height: 100px;
+        width: 100px;
+        position: absolute;
+        top: 50px;
+        left: 50px;
+        box-sizing: border-box;
+    }
+</style>
+
+<body>
+
+<div class="ring" id="ring"></div>
+
+<script>
+    const Move = function () {
+        document.body.addEventListener("keydown", this._keyDown.bind(this));
+
+        this.elm = document.getElementById(".ring");
+
+        this._step = 5;
+    };
+
+    Move.prototype._keyDown = function (e) {
+
+    }
+</script>
+</body>
+</html>

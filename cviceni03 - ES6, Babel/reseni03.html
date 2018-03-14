@@ -79,7 +79,7 @@
             this._filter = filter
         }
 
-        getTodos = function () {
+        getTodos() {
             return this._todos.filter(todo => {
                 if (this._filter === 'all') {
                     return true;
@@ -137,9 +137,8 @@
         }
     }
 
-    function
-
-    createHtmlWithStrings(todos, targetEl) {
+    debugger;
+    function createHtmlWithStrings(todos, targetEl) {
         targetEl.innerHTML = '';
 
         // TODO rewrite with template literal
@@ -148,7 +147,7 @@
                     <li>
                         <input class="toggle" type="checkbox" ${(todo.completed ? 'checked' : '')}>
                         <label>${todo.text}</label>
-                        <button class="destroy"></buttoncl>
+                        <button class="destroy"></button>
                     </li>
                     `;
         });
