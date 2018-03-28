@@ -3,6 +3,14 @@
 <head>
     <meta charset="utf-8">
     <title>Lecture 05</title>
+
+    <style>
+        #chat {
+            width: 300px;
+            height: 100px;
+            overflow-y: scroll;
+        }
+    </style>
 </head>
 <body>
 <section>
@@ -11,7 +19,6 @@
 
     <h2>Mapy</h2>
     <ul id="mapy"></ul>
-
 </section>
 <section>
     <h2>Chat</h2>
@@ -46,7 +53,6 @@
     }
 
     /////////// XHR to api and handle data ///////////
-
     // const request = new XMLHttpRequest();
     //
     // // handle success data mine
@@ -147,6 +153,7 @@
         e.target.value = "";
         ws.send(message);
     });
+
 </script>
 
 </body>

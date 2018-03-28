@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Lecture 06</title>
+
+    <style>
+        body {
+            font-size: 14px;
+            font-family: Arial, sans-serif;
+            color: #000;
+            background-color: #fff;
+        }
+
+        article > input {
+            display: none;
+        }
+
+        article > input + label {
+            width: 100px;
+            height: 40px;
+            display: block; /* default label has no display, cant set size */
+            background: #dedede;
+            position: relative; /* need to be relative to be able to move with element */
+            overflow: hidden; /* */
+            border: 1px solid #a0a0a0;
+        }
+
+        article > input + label::before {
+            content: " ";
+            display: block;
+            width: 50px;
+            height: 40px;
+            background: green;
+            left: 0;
+            right: auto;
+            position: absolute;
+        }
+
+        article > input:checked + label::before {
+            left: auto;
+            right: 0;
+        }
+
+
+        /* desktop menu */
+        #burger {
+            overflow: hidden;
+            width: 0;
+            height: 0;
+        }
+
+        #burger + input {
+            display: none;
+        }
+
+        #burger::before {
+            content: "\2630";
+            background-color: #111;
+            color: #fff;
+            padding: 3px 20px 4px 20px;
+            /*display: inline-block;*/
+            cursor: pointer;
+            display: none;
+        }
+
+        #menu {
+            /*display: inline-block;*/
+            margin: 0;
+            padding: 0;
+        }
+
+        #menu ul {
+            margin: 0;
+            padding: 0;
+        }
+
+        #menu ul li {
+            display: inline-block;
+            list-style-type: none;
+            background-color: #111;
+            margin: 0;
+            padding: 0;
+        }
+
+        #menu li a {
+            display: block;
+            text-decoration: none;
+            padding: 5px 10px;
+            color: #ffffff;
+        }
+
+        @media screen and (max-width: 420px) {
+            #burger::before {
+                display: inline-block;
+            }
+
+            #menu ul li {
+                display: block;
+                margin-bottom: 1px;
+            }
+
+            #menu ul li:before {
+                counter-increment: item;
+                content: "poradi: " counter(item);
+                color: #00a000;
+            }
+
+            #menu {
+                counter-reset: item;
+                display: none;
+            }
+
+            #burger + input:checked + #menu {
+                display: block;
+            }
+        }
+
+        /*
+            1. Vyrobte horizontalni menu, ktere bude tvoreno tmave sedymi obdelniky s bilym textem
+            2. Menu pro sirku stranky mene nez 420px prestylujte pomoci mediaqueries tak aby byly polozky serazeny pod sebou
+            3. Vyrobte burger spoustec menu, ktery jej bude v malem rozliseni ukazovat a schovavat (na kliknuti)
+            4. U polozek ktere maji atribut data-state new, vypisujte hodnotu atributu pred odkaz
+            5. Ocislujte jednotlive polozky pomoci css generatoru
+            6. U pozadi polozek stridejte barvu pozadi
+        */
+    </style>
+</head>
+<body>
+<label id="burger" for="burgerControl"></label>
+<input type="checkbox" id="burgerControl">
+
+<nav id="menu">
+    <ul>
+        <li><a href="#prvni" data-state="new!" class="link">Prvni</a></li>
+        <li><a href="#druhy" class="link">Druhy</a></li>
+        <li><a href="#treti" class="link">Treti</a></li>
+        <li><a href="#ctvrty" class="link">Ctvrty</a></li>
+        <li><a href="#paty" class="link">Paty</a></li>
+    </ul>
+</nav>
+
+<article>
+    <input type="checkbox" id="chk1"/>
+    <label for="chk1"></label>
+</article>
+</body>
+</html>
