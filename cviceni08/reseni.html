@@ -45,13 +45,12 @@
             height: 100%;
             width: 200px;
             background: indianred;
-            trasition: transform 1s ease;
+            transition: transform 1s ease;
 
         }
 
         body.menu-visible .menu {
             transform: translateX(-100%);
-            transition: 1s;
         }
 
         /* Modal */
@@ -86,10 +85,8 @@
             /* sprite has 6 frames, each is 256x256. Total width is 256 * 6 = 1536px */
             width: 256px;
             height: 256px;
-            background-image: url('sprite.png'); /* http://seznam.github.io/CVUT/KAJ/cviceni/08/sprite.png */
-            background-position: 0 0;
-            background-repeat: no-repeat;
-            /*animation: move 0.5s infinite steps(5);*/
+            /* http://seznam.github.io/CVUT/KAJ/cviceni/08/sprite.png */
+            background: url('sprite.png') no-repeat 0 0;
             animation: move 0.5s infinite steps(5), run 2.5s infinite linear;
         }
 
