@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<!-- saved from url=(0055)http://seznam.github.io/CVUT/KAJ/cviceni/03/zadani.html -->
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>prednaska</title>
+</head>
+<body>
+
+    <canvas id="myCanvas" width="200" height="200" style="border: 1px solid black">
+
+    </canvas>
+
+<script>
+    var c = document.querySelector("canvas").getContext("2d");
+    c.moveTo(0, 0);
+    c.lineTo(200, 200);
+    c.stroke();
+
+    c.font = "bold 20px arial";
+    c.textAlign = "middle";
+    c.textBaseline = "bottom";
+
+    c.fillText("test", 20, 50);
+</script>
+
+
+</body>
+</html>
